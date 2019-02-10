@@ -1,14 +1,18 @@
 <template>
   <b-container fluid class="dropList p-0">
     <Item v-for="(item, index) in dropArr" :key='index'
-      :value="item.value" v-on:updateValue="dropDownValue($event, item)"
-      :fonticon="item.font_awesome_icon"/>
+      v-on:updateValue="updateCheck(index)"
+      :value="item.value"
+      :fonticon="item.font_awesome_icon"
+      :checked="item.checked"
+      />
   </b-container>
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 import Item from "@/components/Dropdown-item";
+import { bus } from "@/main";
 
 
 
@@ -20,7 +24,7 @@ export default {
   
   data() {
     return {
-      dropArr: []
+      dropArr: [],
     }
   },
 
@@ -30,7 +34,7 @@ export default {
 
   created() {
     var self = this;
-    axios.get('https://api.myjson.com/bins/o2ebg')
+    axios.get('https://api.myjson.com/bins/8vyhc')
     .then(function (response) {
         self.dropArr = response.data;
         console.log(response);
@@ -40,10 +44,24 @@ export default {
     });
 
   },
+  computed: {
+
+  },
+
   methods: {
-    dropDownValue: function(event, item) {
-      item.value = event;
-      console.log(this.dropArr);
+
+    //  This function, fired from clicking a list item from the Dropdow-item component, iterates through the dropArr
+    //  to find the item that was clicked and then set that item's "checked" property to true
+    updateCheck: function(index) {
+      
+      for(let i = 0; i < this.dropArr.length; i++) {
+        if(i == index) {
+          this.dropArr[i].checked = true;
+        }
+        else{
+          this.dropArr[i].checked = false;
+        } 
+      }
     }
   }
 }
@@ -65,5 +83,6 @@ export default {
       list-style-type: none;
     }
   }
+  
 
 </style>

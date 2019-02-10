@@ -1,19 +1,13 @@
 <template>
 <b-container fluid class="item_select">
-    
-    <b-row class="py-2">
+    <b-row v-on:click="updateValue" class="py-2">
         <b-col cols="2">
-            <div v-if="check">
-                <font-awesome-icon v-bind:icon="fonticon"/>
-                <!-- <i class="fonticon"></i>
-                <i class="fas fa-coffee"></i> -->
+            <div v-show="checked">
+                <font-awesome-icon v-bind:icon="fonticon" class="iconActive"/>
             </div>
         </b-col>
-        <b-col v-on:click="toggleCheck" cols="8" class="text-left p-0">
+        <b-col cols="10" class="text-left p-0">
             {{ value }}
-        </b-col>
-        <b-col v-on:click="updateValue" cols="2" class="p-0" style="font-size: 10px; color: white;">
-            Update
         </b-col>
     </b-row>
 </b-container>
@@ -21,28 +15,30 @@
 </template>
 
 <script>
+import { bus } from '@/main';
+
 export default {
-    props: ["fonticon", "value"],
+    props: ["fonticon", "value", "title", "checked"],
     data() {
         return {
-            check: false
+            buttonName: 'title'
         }
     },
     methods: {
-        toggleCheck: function() {
-            if(this.check) {
-                this.check = false;
-            }
-            else {
-                this.check = true;
-            }
-
-        },
+        
+        //  when a list item is clicked:
+        //  the updateValue function is triggered which changes the item's "checked" property to true
+        //  it's value is passed up to the button title through the event bus
+        
         updateValue: function() {
-            this.$emit('updateValue', 'newDropDownValue');
+            
+            this.$emit('updateValue');
+            
+            this.buttonName = this.value;
+            bus.$emit('titleChanged', this.value);
+            
         }
-  }
-    
+  },   
 }
 </script>
 
@@ -53,6 +49,9 @@ export default {
             background: rgb(61, 80, 117);
             color: white;
 
+        }
+        &.iconActive {
+            color: black;
         }
     }
 

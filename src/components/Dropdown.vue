@@ -1,7 +1,8 @@
 <template>
 <b-container fluid class="dropdown">
+     <!-- v-bind:title="title" -->
     <Button v-on:click.native="toggleActive" class="dropdown_button"></Button>
-    <div v-if="active">
+    <div class="inactive" v-bind:class="{ hide: !(show) }">
         <List/>
     </div>
     
@@ -11,7 +12,7 @@
 
 <script>
 
-import Button from '@/components/Dropdown-button';
+import Button from '@/components/Dropdown-button';  
 import List from '@/components/Dropdown-list';
 
 export default {
@@ -21,16 +22,16 @@ export default {
     },
     data() {
         return {
-            active: false
+            show: true,
         }
     },
     methods: {
         toggleActive: function() {
-            if (this.active) {
-                this.active = false;
+            if (this.show) {
+                this.show = false;
             }
             else {
-                this.active = true; 
+                this.show = true; 
             }
         }
     }
@@ -41,6 +42,10 @@ export default {
 <style lang="scss"> 
     .dropdown{
         max-width: 300px;
+
+        .hide{
+            display: none;
+        }
         
     }
     .dropdown_button{

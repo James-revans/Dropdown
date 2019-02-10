@@ -1,13 +1,31 @@
 <template>
     <b-row class="create m-0">
       <b-col class="p-1 m-0">
-        <p class="title m-0">Create New Item</p>
+        <p v-bind:title="title" class="title m-0">{{ title }}</p>
       </b-col>
     </b-row>
 </template>
 
 <script>
-export default {    
+import { bus } from '@/main';
+
+export default {  
+
+  data() {
+    return {
+      title: 'Create a New Item'
+      
+    }
+  },
+  methods: {
+    
+  },
+  created() {
+    bus.$on('titleChanged', (data) => {
+      this.title = data;
+    })
+
+  }
 }
 </script>
 
